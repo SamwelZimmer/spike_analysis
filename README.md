@@ -1,1 +1,1 @@
-# spike_analysis
+# Spike Analysis
