@@ -11,15 +11,15 @@ def detect_spikes(y: np.ndarray, threshold: float, minimum_gap: int=1, use_absol
 
     Parameters
     ----------
-    y : np.ndarray
+    y: np.ndarray
         The input signal.
-    threshold : float
+    threshold: float
         The threshold value for spike detection. If `use_absolute_threshold` is False, this is a relative value.
-    minimum_gap : int, optional
+    minimum_gap: int, optional
         The minimum number of samples between spikes. Default is 1.
     use_absolute_threshold : bool, optional
         If True, `threshold` is an absolute value. If False, `threshold` is a relative value. Default is False.
-    flipped : bool, optional
+    flipped: bool, optional
         If True, the function will detect troughs (downward spikes) instead of peaks (upward spikes). Default is False.
 
     Returns
