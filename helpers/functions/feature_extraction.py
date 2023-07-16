@@ -49,7 +49,7 @@ def pca_feature_extraction(waveforms: np.ndarray, n_components: int=3) -> Tuple[
     # transpose waveforms to get it in the shape of (#spikes x length(window) x #channels)
     waveforms = waveforms.transpose(1, 0, 2)
     
-    # initialize PCA
+    # initialise PCA
     pca = PCA(n_components=n_components)
     
     num_spikes, _, num_channels = waveforms.shape
@@ -58,7 +58,7 @@ def pca_feature_extraction(waveforms: np.ndarray, n_components: int=3) -> Tuple[
     # apply PCA to each channel
     for i in range(num_channels):
         waveforms_channel = waveforms[:, :, i]
-        waveforms_channel = waveforms_channel.reshape((num_spikes, -1))  # Reshape to 2D array
+        waveforms_channel = waveforms_channel.reshape((num_spikes, -1))  # reshape to 2D array
         b[:, i*n_components:(i+1)*n_components] = pca.fit_transform(waveforms_channel)
     
     explained_variance_ratio = pca.explained_variance_ratio_

@@ -82,6 +82,46 @@ def detect_spikes(y: np.ndarray, threshold: float, minimum_gap: int=1, use_absol
     return extrema
 
 
+def merge_spike_indices(spike_indices: np.ndarray[np.ndarray], tolerance: int=5) -> np.ndarray:
+    """
+    Merge spike indices from multiple channels into a single array. 
+    If the points are close together only the midpoint is added.
+
+    Parameters:
+    -----------
+    spike_indices: list of numpy arrays
+        Each numpy array contains spike indices for a single channel.
+    tolerance: int, optional
+        The maximum distance between spike indices that will be considered as the same spike.
+        Indices within this distance will be replaced by their midpoint.
+
+    Returns:
+    --------
+    numpy array
+        A single array of merged spike indices.
+    """
+
+    # flatten all indices into a single list
+    all_indices = np.concatenate(spike_indices)
+    
+    # sort the indices
+    all_indices.sort()
+    
+    # initialise the output list with the first index
+    merged_indices = [all_indices[0]]
+    
+    # go through the sorted list and merge indices that are close together
+    for index in all_indices[1:]:
+        if index - merged_indices[-1] <= tolerance:
+            # if the current index is close to the last one in the output list, replace the last one with their average (rounded to nearest integer)
+            merged_indices[-1] = round((merged_indices[-1] + index) / 2)
+        else:
+            # if the current index is not close to the last one, add it to the output list
+            merged_indices.append(index)
+    
+    return np.array(merged_indices, dtype=int)
+
+
 def get_waveforms(y: np.ndarray, spike_indices: np.ndarray, duration: int, sample_rate: int, window_shift_ratio: float=0.5) -> Tuple[np.ndarray[np.ndarray], List[dict]]:
     """
     Extracts waveforms from a signal at given indices.
